@@ -15,6 +15,7 @@ import (
 	"greenlight.iskhakov.net/internal/data"
 	"greenlight.iskhakov.net/internal/jsonlog"
 	"greenlight.iskhakov.net/internal/mailer"
+	"greenlight.iskhakov.net/internal/vcs"
 
 	// Import the pq driver so that it can register itself with the database/sql
 	// package. Note that we alias this import to the blank identifier, to stop the Go
@@ -25,7 +26,11 @@ import (
 // Declare a string containing the application version number. Later in the book we'll
 // generate this automatically at build time, but for now we'll just store the version
 // number as a hard-coded global constant.
-const version = "1.0.0"
+// const version = "1.0.0"
+// Make version a variable (rather than a constant) and set its value to vcs.Version().
+var (
+	version = vcs.Version()
+)
 
 // Define a config struct to hold all the configuration settings for our application.
 // For now, the only configuration settings will be the network port that we want the
