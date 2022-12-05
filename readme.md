@@ -94,3 +94,10 @@ GROUP BY email;
 - Deploy API: `make production/deploy/api`
 - Make sure server IP/host is consistent in `remote/production/Caddyfile`
 - Set the email address to use Let's Encrypt in `remote/production/Caddyfile`
+
+## .envrc Example
+
+```
+export GREENLIGHT_DB_DSN=postgres://postgres@localhost/database?sslmode=disable
+export PRODUCTION_HOST="100.100.100.100"
+```
