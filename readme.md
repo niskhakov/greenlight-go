@@ -26,7 +26,6 @@
 - `migrate create -seq -ext=.sql -dir=./migrations create_movies_table` - Create migration
 - `migrate -path=./migrations -database=$GREENLIGHT_DB_DSN up` - Run migrations
 
-
 ## Give permission to users
 
 ```SQL
@@ -54,21 +53,44 @@ GROUP BY email;
 ```
 
 ## Start Project with CORS
+
 - `go run ./cmd/api -cors-trusted-origins="http://localhost:9000 http://localhost:9001"`
 
 ## Generate load with 'hey' tool
+
 - https://github.com/rakyll/hey
 - `BODY='{"email": "alice@example.com", "password": "pa55word"}'`
 - `hey -d "$BODY" -m "POST" http://localhost:4000/v1/tokens/authentication`
 - Make sure API has rate limiter turned off with the `-limiter-enabled=false`
 
 ## Check source code with 'staticcheck' tool
+
 - `go install honnef.co/go/tools/cmd/staticcheck@latest`
 
 ## Disabling GoProxy
+
 - By default: "GOPROXY=https://proxy.golang.org,direct"
 - See in `go env`
 - Use direct: "export GOPROXY=direct"
 
 ## Cross Compilation
+
 - See a list of all the os/architecture combinations that Go supports: `go tool dist list`
+
+## Production
+
+- Copy remote/setup script to server: `rsync -rP --delete ./remote/setup root@45.55.49.87:/root`
+- Run the script: `ssh -t root@45.55.49.87 "bash /root/setup/01.sh"`
+- Connect to server: `ssh greenlight@45.55.49.87`
+- Check migrate tool: `greenlight@greenlight-production:~$ migrate -version`
+- Check Postgres is running: `greenlight@greenlight-production:~$ psql $GREENLIGHT_DB_DSN `
+- Check Caddy status: `greenlight@greenlight-production:~$ sudo systemctl status caddy`
+- Go to Caddy web page: `firefox http://<your_droplet_ip>`
+- You can connect to server: `make production/connect`
+- View app logs: `sudo journalctl -u api`
+
+## Deploy
+
+- Deploy API: `make production/deploy/api`
+- Make sure server IP/host is consistent in `remote/production/Caddyfile`
+- Set the email address to use Let's Encrypt in `remote/production/Caddyfile`
